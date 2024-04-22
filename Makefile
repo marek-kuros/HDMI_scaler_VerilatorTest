@@ -30,17 +30,36 @@ VERILATOR_COVERAGE = verilator_coverage
 #setting flags - you can read more -> https://verilator.org/guide/latest/exe_verilator.html?highlight=flags#cmdoption-CFLAGS
 VERILATOR_FLAGS += -cc --exe
 VERILATOR_FLAGS += --x-assign unique #for testing if reset works
-VERILATOR_FLAGS += -Wall
-VERILATOR_FLAGS += --trace
+#VERILATOR_FLAGS += -Wall
+
+#VERILATOR_FLAGS += --trace
+
 VERILATOR_FLAGS += --assert
 VERILATOR_FLAGS += --coverage
 
-VERILATOR_INPUT = -f FilesList.txt
+VERILATOR_INPUT = -f FilesList.txt sim_top.cpp
+
+### top name #########################################################
+TOP_MODULE = dc_toplevel
+### timescale ########################################################
 ######################################################################
 default: run
 
 run:
 	$(VERILATOR) $(VERILATOR_FLAGS) $(VERILATOR_INPUT)
+	$(MAKE) -j -C obj_dir -f Vtop.mk
+	@echo "---- VERILATOR_COVERAGE --------------------------"
+	$(VERILATOR_COVERAGE)
+	@echo "---- RUN TEST ------------------------------------"
+	obj_dir/Vdc_toplevel
+	@echo "---- DONE ----------------------------------------"
 
 build_binary:
-	verilator --binary -j 0 -f FilesList.txt --top-module dc_toplevel -Wno-fatal
+	verilator --binary -j 0 -f FilesList.txt --top-module $(TOP_MODULE) -Wno-fatal
+build_cc:
+	verilator --cc -j 0 -f FilesList.txt --top-module $(TOP_MODULE) -Wno-fatal
+#testing
+build_test:
+	verilator --cc --exe --build -j 2 sim_top.cpp -f FilesList.txt --top-module $(TOP_MODULE) -Wno-fatal
+clean:
+	-rm -rf obj_dir *.log *.dmp *.vpd core
