@@ -16,3 +16,8 @@ void PLL::Increment_Ctr(){
         this->H_ctr++;
     }
 }
+
+void PLL::Reset(){
+    this->H_ctr = 0;
+    this->V_ctr = 0;
+}

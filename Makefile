@@ -62,5 +62,7 @@ build_cc:
 SIM_FILES = sim_top.cpp VGA_PLL.cpp
 build_test:
 	verilator --cc --exe --build -j 2 $(SIM_FILES) -f FilesList.txt --top-module $(TOP_MODULE) -Wno-fatal
+run_test:
+	obj_dir/Vdc_toplevel
 clean:
 	-rm -rf obj_dir *.log *.dmp *.vpd core
