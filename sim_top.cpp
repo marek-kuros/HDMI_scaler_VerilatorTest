@@ -5,8 +5,13 @@
 #include <verilated.h>
 #include "Vdc_toplevel.h"
 
-int main(int argc, char** argv){
+#include "VGA_PLL.hpp"
 
+int main(int argc, char** argv){
+    //my stuff
+    PLL VGA_PLL;
+
+    //verilator stuff
     const std::unique_ptr<VerilatedContext> contextp{new VerilatedContext};
 
     (*contextp).debug(0);
@@ -37,22 +42,36 @@ int main(int argc, char** argv){
     top->const_output_size_height = 480;
     top->const_initial_address = 0;
     top->const_border_color = 0;
+
+    //set cout formatting
     
     while(!(contextp->gotFinish())){
 
+        //increment timing
         contextp->timeInc(1);
         top->clk = !top->clk;
+        VGA_PLL.Increment_Ctr();
+
+        if(!VGA_PLL.H_ctr) printf("%d\n", VGA_PLL.V_ctr);
 
         //reset signal
         if(contextp->time() < 15){
             top->nrst = 0;
+
+            VGA_PLL.H_ctr = 0;
+            VGA_PLL.V_ctr = 0;
         } else {
             top->nrst = 1;
         }
         
-        printf("inloop");
+        // std::cout << "clk " << top->clk << std::endl;
+        // printf("clk - %d\n", top->clk);
 
         top->eval();
+
+        if((top->ipu_pixel_data) && (contextp->time() > 25)){
+            break;
+        }
     }
 
     top->final();

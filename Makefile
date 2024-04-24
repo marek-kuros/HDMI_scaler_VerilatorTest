@@ -49,7 +49,7 @@ run:
 	$(VERILATOR) $(VERILATOR_FLAGS) $(VERILATOR_INPUT)
 	$(MAKE) -j -C obj_dir -f Vtop.mk
 	@echo "---- VERILATOR_COVERAGE --------------------------"
-	$(VERILATOR_COVERAGE)
+	$(VERILATOR_COVERAGE) --annotate logs/annotated logs/coverage.dat
 	@echo "---- RUN TEST ------------------------------------"
 	obj_dir/Vdc_toplevel
 	@echo "---- DONE ----------------------------------------"
@@ -59,7 +59,8 @@ build_binary:
 build_cc:
 	verilator --cc -j 0 -f FilesList.txt --top-module $(TOP_MODULE) -Wno-fatal
 #testing
+SIM_FILES = sim_top.cpp VGA_PLL.cpp
 build_test:
-	verilator --cc --exe --build -j 2 sim_top.cpp -f FilesList.txt --top-module $(TOP_MODULE) -Wno-fatal
+	verilator --cc --exe --build -j 2 $(SIM_FILES) -f FilesList.txt --top-module $(TOP_MODULE) -Wno-fatal
 clean:
 	-rm -rf obj_dir *.log *.dmp *.vpd core
