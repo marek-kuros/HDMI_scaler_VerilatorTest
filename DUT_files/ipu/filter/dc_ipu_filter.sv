@@ -217,21 +217,24 @@ wire outer_product_in_valid_c =
   magic_selected_c   ? magic_out_valid   :
                        nearest_out_valid;
 
-wire[RGB_WIDTH-1:0] texel_matrix_c[0:3][0:3] =
+wire[RGB_WIDTH-1:0] texel_matrix_c[0:3][0:3];
+assign texel_matrix_c =
   nearest_selected_c ? nearest_out_texel_matrix :
   linear_selected_c  ? linear_out_texel_matrix  :
   cubic_selected_c   ? cubic_out_texel_matrix   :
   magic_selected_c   ? magic_out_texel_matrix   :
                        nearest_out_texel_matrix;
 
-wire signed[WEIGHT_WIDTH-1:0] weights_x_c[0:3] =
+wire signed[WEIGHT_WIDTH-1:0] weights_x_c[0:3];
+assign weights_x_c =
   nearest_selected_c ? nearest_out_weights_x :
   linear_selected_c  ? linear_out_weights_x  :
   cubic_selected_c   ? cubic_out_weights_x   :
   magic_selected_c   ? magic_out_weights_x   :
                        nearest_out_weights_x;
 
-wire signed[WEIGHT_WIDTH-1:0] weights_y_c[0:3] =
+wire signed[WEIGHT_WIDTH-1:0] weights_y_c[0:3];
+assign weights_y_c =
   nearest_selected_c ? nearest_out_weights_y :
   linear_selected_c  ? linear_out_weights_y  :
   cubic_selected_c   ? cubic_out_weights_y   :

@@ -28,41 +28,46 @@ VERILATOR = verilator
 VERILATOR_COVERAGE = verilator_coverage
 
 #setting flags - you can read more -> https://verilator.org/guide/latest/exe_verilator.html?highlight=flags#cmdoption-CFLAGS
-VERILATOR_FLAGS += -cc --exe
-VERILATOR_FLAGS += --x-assign unique #for testing if reset works
-#VERILATOR_FLAGS += -Wall
-
-#VERILATOR_FLAGS += --trace
-
-VERILATOR_FLAGS += --assert
-VERILATOR_FLAGS += --coverage
 
 VERILATOR_INPUT = -f FilesList.txt sim_top.cpp
 
 ### top name #########################################################
-TOP_MODULE = dc_toplevel
+TOP_MODULE = DE10_LITE_SDRAM_Nios_Test #dc_toplevel
 ### timescale ########################################################
 ######################################################################
-default: run
-
-run:
-	$(VERILATOR) $(VERILATOR_FLAGS) $(VERILATOR_INPUT)
-	$(MAKE) -j -C obj_dir -f Vtop.mk
-	@echo "---- VERILATOR_COVERAGE --------------------------"
-	$(VERILATOR_COVERAGE) --annotate logs/annotated logs/coverage.dat
-	@echo "---- RUN TEST ------------------------------------"
-	obj_dir/Vdc_toplevel
-	@echo "---- DONE ----------------------------------------"
+default: build_binary
 
 build_binary:
 	verilator --binary -j 0 -f FilesList.txt --top-module $(TOP_MODULE) -Wno-fatal
 build_cc:
 	verilator --cc -j 0 -f FilesList.txt --top-module $(TOP_MODULE) -Wno-fatal
-#testing
+### testing ##########################################################
+######################################################################
 SIM_FILES = sim_top.cpp VGA_PLL.cpp
 build_test:
 	verilator --cc --exe --build -j 4 $(SIM_FILES) -f FilesList.txt --top-module $(TOP_MODULE) -Wno-fatal
 run_test:
 	obj_dir/Vdc_toplevel
+
+### cleanup ##########################################################
+######################################################################
 clean:
 	-rm -rf obj_dir *.log *.dmp *.vpd core
+
+
+# VERILATOR_FLAGS += -cc --exe
+# VERILATOR_FLAGS += --x-assign unique #for testing if reset works
+# #VERILATOR_FLAGS += -Wall
+
+# #VERILATOR_FLAGS += --trace
+
+# VERILATOR_FLAGS += --assert
+# VERILATOR_FLAGS += --coverage
+# run:
+# 	$(VERILATOR) $(VERILATOR_FLAGS) $(VERILATOR_INPUT)
+# 	$(MAKE) -j -C obj_dir -f Vtop.mk
+# 	@echo "---- VERILATOR_COVERAGE --------------------------"
+# 	$(VERILATOR_COVERAGE) --annotate logs/annotated logs/coverage.dat
+# 	@echo "---- RUN TEST ------------------------------------"
+# 	obj_dir/Vdc_toplevel
+# 	@echo "---- DONE ----------------------------------------"

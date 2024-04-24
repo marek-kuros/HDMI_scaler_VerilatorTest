@@ -59,7 +59,8 @@ always @(posedge clk or negedge nreset)
     s1_alpha3_r <= s1_alpha3_nxt_c;
 
 reg signed[WEIGHT_WIDTH-1:0] s1_weights_r[0:3];
-wire signed[WEIGHT_WIDTH-1:0] s1_weights_nxt_c[0:3] = intermediate_weights_c;
+wire signed[WEIGHT_WIDTH-1:0] s1_weights_nxt_c[0:3];
+assign s1_weights_nxt_c[0:3] = intermediate_weights_c;
 wire s1_weights_en_c = en;
 
 always @(posedge clk or negedge nreset)

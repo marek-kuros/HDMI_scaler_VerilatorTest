@@ -116,7 +116,7 @@ dc_fu_dma #(
 
 dc_fu_pixel_unpack #(
   .BITS_PER_PIXEL(BITS_PER_PIXEL)
-)(
+)comb_3(
   .clk(clk),
   .en(en),
   .nrst(nrst),

@@ -182,76 +182,76 @@ wire VGA_CTRL_CLK;
 //  Structural coding
 //=======================================================
 
-pll_vga u1(
-	.areset(1'b0),
-	.inclk0(MAX10_CLK2_50),
-	.c0(VGA_CTRL_CLK),
-	.locked());
+// pll_vga u1(
+// 	.areset(1'b0),
+// 	.inclk0(MAX10_CLK2_50),
+// 	.c0(VGA_CTRL_CLK),
+// 	.locked());
 
 
 
-DE10_LITE_Qsys u0 (
-        .clk_clk                           (VGA_CTRL_CLK),                           //                        clk.clk
-        .reset_reset_n                     (SW[0]),                     //                      reset.reset_n
-        .altpll_0_locked_conduit_export    (),    //    altpll_0_locked_conduit.export
-        .altpll_0_phasedone_conduit_export (), // altpll_0_phasedone_conduit.export
-        .altpll_0_areset_conduit_export    (),     //    altpll_0_areset_conduit.export
+// DE10_LITE_Qsys u0 (
+//         .clk_clk                           (VGA_CTRL_CLK),                           //                        clk.clk
+//         .reset_reset_n                     (SW[0]),                     //                      reset.reset_n
+//         .altpll_0_locked_conduit_export    (),    //    altpll_0_locked_conduit.export
+//         .altpll_0_phasedone_conduit_export (), // altpll_0_phasedone_conduit.export
+//         .altpll_0_areset_conduit_export    (),     //    altpll_0_areset_conduit.export
     
-        .key_external_connection_export    (KEY),    //    key_external_connection.export
-		//SDRAM
-		.clk_sdram_clk(DRAM_CLK),                  //               clk_sdram.clk
-	   .sdram_wire_addr(DRAM_ADDR),                //              sdram_wire.addr
-		.sdram_wire_ba(DRAM_BA),                  //                        .ba
-		.sdram_wire_cas_n(DRAM_CAS_N),               //                        .cas_n
-		.sdram_wire_cke(DRAM_CKE),                 //                        .cke
-		.sdram_wire_cs_n(DRAM_CS_N),                //                        .cs_n
-		.sdram_wire_dq(DRAM_DQ),                  //                        .dq
-		.sdram_wire_dqm({DRAM_UDQM,DRAM_LDQM}),                 //                        .dqm
-		.sdram_wire_ras_n(DRAM_RAS_N),               //                        .ras_n
-		.sdram_wire_we_n(DRAM_WE_N),                 //                        .we_n
-                // DMA AXI Slave IF
-		.axi_bridge_0_s0_awid                    (),                    //             axi_bridge_0_s0.awid
-		.axi_bridge_0_s0_awaddr                  (),                  //                            .awaddr
-		.axi_bridge_0_s0_awlen                   (),                   //                            .awlen
-		.axi_bridge_0_s0_awsize                  (),                  //                            .awsize
-		.axi_bridge_0_s0_awburst                 (),                 //                            .awburst
-		.axi_bridge_0_s0_awlock                  (),                  //                            .awlock
-		.axi_bridge_0_s0_awcache                 (),                 //                            .awcache
-		.axi_bridge_0_s0_awprot                  (),                  //                            .awprot
-		.axi_bridge_0_s0_awqos                   (),                   //                            .awqos
-		.axi_bridge_0_s0_awregion                (),                //                            .awregion
-		.axi_bridge_0_s0_awvalid                 (),                 //                            .awvalid
-		.axi_bridge_0_s0_awready                 (),                 //                            .awready
-		.axi_bridge_0_s0_wdata                   (),                   //                            .wdata
-		.axi_bridge_0_s0_wstrb                   (),                   //                            .wstrb
-		.axi_bridge_0_s0_wlast                   (),                   //                            .wlast
-		.axi_bridge_0_s0_wvalid                  (),                  //                            .wvalid
-		.axi_bridge_0_s0_wready                  (),                  //                            .wready
-		.axi_bridge_0_s0_bid                     (),                     //                            .bid
-		.axi_bridge_0_s0_bresp                   (),                   //                            .bresp
-		.axi_bridge_0_s0_bvalid                  (),                  //                            .bvalid
-		.axi_bridge_0_s0_bready                  (),                  //                            .bready
-		.axi_bridge_0_s0_arid                    (axi_arid),                    //                            .arid
-		.axi_bridge_0_s0_araddr                  (axi_araddr),                  //                            .araddr
-		.axi_bridge_0_s0_arlen                   (axi_arlen),                   //                            .arlen
-		.axi_bridge_0_s0_arsize                  (axi_arsize),                  //                            .arsize
-		.axi_bridge_0_s0_arburst                 (axi_arburst),                 //                            .arburst
-		.axi_bridge_0_s0_arlock                  (axi_arlock),                  //                            .arlock
-		.axi_bridge_0_s0_arcache                 (axi_arcache),                 //                            .arcache
-		.axi_bridge_0_s0_arprot                  (axi_arprot),                  //                            .arprot
-		.axi_bridge_0_s0_arqos                   (axi_arqos),                   //                            .arqos
-		.axi_bridge_0_s0_arregion                (axi_arregion),                //                            .arregion
-		.axi_bridge_0_s0_arvalid                 (axi_arvalid),                 //                            .arvalid
-		.axi_bridge_0_s0_arready                 (axi_arready),                 //                            .arready
-		.axi_bridge_0_s0_rid                     (axi_rid),                     //                            .rid
-		.axi_bridge_0_s0_rdata                   (axi_rdata),                   //                            .rdata
-		.axi_bridge_0_s0_rresp                   (axi_rresp),                   //                            .rresp
-		.axi_bridge_0_s0_rlast                   (axi_rlast),                   //                            .rlast
-		.axi_bridge_0_s0_rvalid                  (axi_rvalid),                  //                            .rvalid
-		.axi_bridge_0_s0_rready                  (axi_rready)                   //                            .rready
+//         .key_external_connection_export    (KEY),    //    key_external_connection.export
+// 		//SDRAM
+// 		.clk_sdram_clk(DRAM_CLK),                  //               clk_sdram.clk
+// 	   .sdram_wire_addr(DRAM_ADDR),                //              sdram_wire.addr
+// 		.sdram_wire_ba(DRAM_BA),                  //                        .ba
+// 		.sdram_wire_cas_n(DRAM_CAS_N),               //                        .cas_n
+// 		.sdram_wire_cke(DRAM_CKE),                 //                        .cke
+// 		.sdram_wire_cs_n(DRAM_CS_N),                //                        .cs_n
+// 		.sdram_wire_dq(DRAM_DQ),                  //                        .dq
+// 		.sdram_wire_dqm({DRAM_UDQM,DRAM_LDQM}),                 //                        .dqm
+// 		.sdram_wire_ras_n(DRAM_RAS_N),               //                        .ras_n
+// 		.sdram_wire_we_n(DRAM_WE_N),                 //                        .we_n
+//                 // DMA AXI Slave IF
+// 		.axi_bridge_0_s0_awid                    (),                    //             axi_bridge_0_s0.awid
+// 		.axi_bridge_0_s0_awaddr                  (),                  //                            .awaddr
+// 		.axi_bridge_0_s0_awlen                   (),                   //                            .awlen
+// 		.axi_bridge_0_s0_awsize                  (),                  //                            .awsize
+// 		.axi_bridge_0_s0_awburst                 (),                 //                            .awburst
+// 		.axi_bridge_0_s0_awlock                  (),                  //                            .awlock
+// 		.axi_bridge_0_s0_awcache                 (),                 //                            .awcache
+// 		.axi_bridge_0_s0_awprot                  (),                  //                            .awprot
+// 		.axi_bridge_0_s0_awqos                   (),                   //                            .awqos
+// 		.axi_bridge_0_s0_awregion                (),                //                            .awregion
+// 		.axi_bridge_0_s0_awvalid                 (),                 //                            .awvalid
+// 		.axi_bridge_0_s0_awready                 (),                 //                            .awready
+// 		.axi_bridge_0_s0_wdata                   (),                   //                            .wdata
+// 		.axi_bridge_0_s0_wstrb                   (),                   //                            .wstrb
+// 		.axi_bridge_0_s0_wlast                   (),                   //                            .wlast
+// 		.axi_bridge_0_s0_wvalid                  (),                  //                            .wvalid
+// 		.axi_bridge_0_s0_wready                  (),                  //                            .wready
+// 		.axi_bridge_0_s0_bid                     (),                     //                            .bid
+// 		.axi_bridge_0_s0_bresp                   (),                   //                            .bresp
+// 		.axi_bridge_0_s0_bvalid                  (),                  //                            .bvalid
+// 		.axi_bridge_0_s0_bready                  (),                  //                            .bready
+// 		.axi_bridge_0_s0_arid                    (axi_arid),                    //                            .arid
+// 		.axi_bridge_0_s0_araddr                  (axi_araddr),                  //                            .araddr
+// 		.axi_bridge_0_s0_arlen                   (axi_arlen),                   //                            .arlen
+// 		.axi_bridge_0_s0_arsize                  (axi_arsize),                  //                            .arsize
+// 		.axi_bridge_0_s0_arburst                 (axi_arburst),                 //                            .arburst
+// 		.axi_bridge_0_s0_arlock                  (axi_arlock),                  //                            .arlock
+// 		.axi_bridge_0_s0_arcache                 (axi_arcache),                 //                            .arcache
+// 		.axi_bridge_0_s0_arprot                  (axi_arprot),                  //                            .arprot
+// 		.axi_bridge_0_s0_arqos                   (axi_arqos),                   //                            .arqos
+// 		.axi_bridge_0_s0_arregion                (axi_arregion),                //                            .arregion
+// 		.axi_bridge_0_s0_arvalid                 (axi_arvalid),                 //                            .arvalid
+// 		.axi_bridge_0_s0_arready                 (axi_arready),                 //                            .arready
+// 		.axi_bridge_0_s0_rid                     (axi_rid),                     //                            .rid
+// 		.axi_bridge_0_s0_rdata                   (axi_rdata),                   //                            .rdata
+// 		.axi_bridge_0_s0_rresp                   (axi_rresp),                   //                            .rresp
+// 		.axi_bridge_0_s0_rlast                   (axi_rlast),                   //                            .rlast
+// 		.axi_bridge_0_s0_rvalid                  (axi_rvalid),                  //                            .rvalid
+// 		.axi_bridge_0_s0_rready                  (axi_rready)                   //                            .rready
 
 	 
-	 );
+// 	 );
 	 
   dc_toplevel #(
     .AXI_ARADDR_WIDTH(AXI_ARADDR_WIDTH),
