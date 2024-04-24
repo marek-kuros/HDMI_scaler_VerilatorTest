@@ -77,7 +77,6 @@ dc_fu_lines_translator #(
   .error_flag(error_flag)
 );
 
-wire unaligned_read;
 dc_fu_dma #(
     .FETCH_WORD_COUNT_WIDTH(FETCH_WORD_COUNT_WIDTH),
     .AXI_ARADDR_WIDTH(AXI_ARADDR_WIDTH),
@@ -93,7 +92,6 @@ dc_fu_dma #(
     .fetch_word_count(fetch_word_count),
     .base_addr(line_addr),
     .error_flag(error_flag),
-    .unaligned_read(unaligned_read),
   
     .axi_arid(axi_arid),  
     .axi_araddr(axi_araddr),  
@@ -122,10 +120,8 @@ dc_fu_pixel_unpack #(
   .clk(clk),
   .en(en),
   .nrst(nrst),
-  
-  .unaligned_read(unaligned_read),
+
   .axi_rvalid(axi_rvalid),
-  .axi_rlast(axi_rlast),
   .axi_rdata(axi_rdata),
   .fetch_in_progress(fetch_in_progress),
   .pixel_data(pixel_data),

@@ -87,7 +87,7 @@ always@(posedge iVGA_CLK , negedge  iRST_n) begin
 
 end
 
-reg [PIXEL_DATA_WIDTH -1:0] pattern_data; 
+
 
 assign oVGA_B= sw_test_en ? pattern_data[23:20] : bgr_data[23:20];
 assign oVGA_G=sw_test_en  ? pattern_data[15:12] : bgr_data[15:12]; 
@@ -117,7 +117,9 @@ begin
      addr_cnt<=addr_cnt+1;
 	  else
 	    addr_cnt<=19'd0;
-end 
+end
+
+reg [PIXEL_DATA_WIDTH -1:0] pattern_data;  
 
 always@(posedge iVGA_CLK)
 begin

@@ -13,7 +13,6 @@ module dc_fu_dma #(
   input wire[(FETCH_WORD_COUNT_WIDTH-1):0] fetch_word_count,
   input wire[(AXI_ARADDR_WIDTH-1):0] base_addr,
   output wire[1:0] error_flag,
-  output wire unaligned_read,
 
   //read address
   output wire[7:0] axi_arid,    
@@ -83,7 +82,6 @@ dc_fu_dma_address_generator #(
   .start_fetch(start_fetch),
   .fetch_word_count(fetch_word_count),
   .base_addr(base_addr),
-  .unaligned_read(unaligned_read),
 
   .next_addr(next_addr),
   .axi_araddr(axi_araddr),

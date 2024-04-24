@@ -268,9 +268,7 @@ assign tex_x_inc_c = matrix_en_c && (gather_fsm_r == GATHER_FSM_ACTIVE);
 
 always @(posedge clk or negedge nreset)
   if (!nreset)
-    for (integer i=0; i<5; i=i+1) 
-      for (integer j=0; j<4; j=j+1) matrix_r[i][j] <= '0;
-    //matrix_r <= '{default: '0};
+    matrix_r <= '{default: '0};
   else if (matrix_en_c)
     matrix_r <= matrix_nxt_c;
 

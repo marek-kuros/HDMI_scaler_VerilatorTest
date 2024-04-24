@@ -93,7 +93,7 @@ dc_mcl_trm_cyclic_manager #(
   always_comb begin
     case(user_int_handshake_fsm_r)
       USER_INT_HANDSHAKE_FSM_IDLE:
-        user_int_handshake_fsm_nxt_c = (user_int_valid && user_int_ready) ?  
+        user_int_handshake_fsm_nxt_c = (user_int_valid) ?  
                                     USER_INT_HANDSHAKE_FSM_SEND_DATA : 
                                     USER_INT_HANDSHAKE_FSM_IDLE;
       USER_INT_HANDSHAKE_FSM_SEND_DATA:

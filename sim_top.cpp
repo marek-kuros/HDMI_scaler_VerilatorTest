@@ -7,6 +7,11 @@
 
 #include "VGA_PLL.hpp"
 
+
+//for printing inputs/outputs
+#define SHOW_INPUTS
+#define SHOW_OUTPUTS
+
 void Set_Blanking(Vdc_toplevel * top, PLL VGA_PLL){
 
     if(VGA_PLL.H_ctr >= H_BLANK){
@@ -22,24 +27,37 @@ void Set_Blanking(Vdc_toplevel * top, PLL VGA_PLL){
 }
 
 void Print_All_Signals(Vdc_toplevel * top){
-    std::cout << top->clk << std::endl;
-    std::cout << top->nrst << std::endl;
-    std::cout << top->en << std::endl;
-    std::cout << top->sw_test_en << std::endl;
-    std::cout << top->sw_layer_0_pos << std::endl;
-    std::cout << top->sw_layer_0_scaling << std::endl;
-    std::cout << top->sw_scaling_method << std::endl;
-    std::cout << top->user_int_valid << std::endl;
-    std::cout << top->vertical_blanking << std::endl;
-    std::cout << top->horizontal_blanking << std::endl;
-    std::cout << top->ipu_pixel_ready << std::endl;
-    std::cout << top->input_color_data << std::endl;
-    std::cout << top->const_input_size_width << std::endl;
-    std::cout << top->const_input_size_height << std::endl; 
-    std::cout << top->const_output_size_width << std::endl;
-    std::cout << top->const_output_size_height << std::endl; 
-    std::cout << top->const_initial_address << std::endl;
-    std::cout << top->const_border_color << std::endl; 
+    //inputs
+    #ifdef SHOW_INPUTS
+    std::cout << "\n\n" << std::endl;
+    std::cout << "inputs" << std::endl;
+    std::cout << "clk = " << top->clk << std::endl;
+    std::cout << "nrst = " << top->nrst << std::endl;
+    std::cout << "en = " << top->en << std::endl;
+    std::cout << "sw_test_en = " << top->sw_test_en << std::endl;
+    std::cout << "sw_layer_0_pos = " << top->sw_layer_0_pos << std::endl;
+    std::cout << "sw_layer_0_scaling = " << top->sw_layer_0_scaling << std::endl;
+    std::cout << "sw_scaling_method = " << top->sw_scaling_method << std::endl;
+    std::cout << "user_int_valid = " << top->user_int_valid << std::endl;
+    std::cout << "vertical_blanking = " << top->vertical_blanking << std::endl;
+    std::cout << "horizontal_blanking = " << top->horizontal_blanking << std::endl;
+    std::cout << "ipu_pixel_ready = " << top->ipu_pixel_ready << std::endl;
+    std::cout << "input_color_data = " << top->input_color_data << std::endl;
+    std::cout << "const_input_size_width = " << top->const_input_size_width << std::endl;
+    std::cout << "const_input_size_height = " << top->const_input_size_height << std::endl; 
+    std::cout << "const_output_size_width = " << top->const_output_size_width << std::endl;
+    std::cout << "const_output_size_height = " << top->const_output_size_height << std::endl; 
+    std::cout << "const_initial_address = " << top->const_initial_address << std::endl;
+    std::cout << "const_border_color = " << top->const_border_color << std::endl;
+    #endif
+    //outputs
+    #ifdef SHOW_OUTPUTS
+    std::cout << "\n\n" << std::endl;
+    std::cout << "outputs" << std::endl;
+    std::cout << "ipu_pixel_data = " << top->ipu_pixel_data << std::endl;
+    std::cout << "user_int_ready = " << top->user_int_ready << std::endl;
+    std::cout << "ipu_pixel_valid = " << top->ipu_pixel_valid << std::endl;
+    #endif
 }
 
 
@@ -61,7 +79,7 @@ int main(int argc, char** argv){
     top->clk = 0;
     top->nrst = 0;
     top->en = 1; //must be 1
-    top->sw_test_en = 0;
+    top->sw_test_en = 1;
     top->sw_layer_0_pos = 0;
     top->sw_layer_0_scaling = 0;
     top->sw_scaling_method = 0;
@@ -69,7 +87,7 @@ int main(int argc, char** argv){
     top->vertical_blanking = 0;
     top->horizontal_blanking = 0;
     top->ipu_pixel_ready = 1;
-    top->input_color_data = 0;
+    top->input_color_data = 7'000'000;
 
     //const
     top->const_input_size_width = 128;
@@ -100,10 +118,12 @@ int main(int argc, char** argv){
         Set_Blanking(top.get(), VGA_PLL);
 
         //drive internal signals
-        top->ipu_pixel_ready = top->ipu_pixel_valid;
+        top->ipu_pixel_ready = !top->ipu_pixel_ready;
 
         //watch signals
-
+        if(top->ipu_pixel_valid){
+            printf("ipu_pixel_valid = %d\n", top->ipu_pixel_valid);
+        }
         
         // std::cout << "clk " << top->clk << std::endl;
         // printf("clk - %d\n", top->clk);
