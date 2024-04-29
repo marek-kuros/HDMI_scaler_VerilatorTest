@@ -43,7 +43,7 @@ build_cc:
 	verilator --cc -j 0 -f FilesList.txt --top-module $(TOP_MODULE) -Wno-fatal
 ### testing ##########################################################
 ######################################################################
-SIM_FILES = sim_top.cpp VGA_PLL.cpp
+SIM_FILES = sim_top.cpp
 build_test:
 	verilator --cc --exe --build -j 4 $(SIM_FILES) -f FilesList.txt --top-module $(TOP_MODULE) -Wno-fatal
 run_test:

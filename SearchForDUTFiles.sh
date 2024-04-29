@@ -2,9 +2,10 @@
 
 function print_files {
     #find ./ -type f | find . -type f -name \*.v
-    files=$(find ./ -type f | find . -type f -name \*.sv)
+    SV_files=$(find ./ -type f | find . -type f -name \*.sv)
+    SV_files+=$(find ./ -type f | find . -type f -name \*.v)
 
-    for element in $files
+    for element in $SV_files
     do
         echo ${1}${element:2} >> ../FilesList.txt
     done

@@ -1,4 +1,3 @@
-DUT_files/de10_lite_sdram_nios_test.v
 DUT_files/main_control_logic/dc_mcl_texture_request_manager.sv
 DUT_files/main_control_logic/dc_mcl_config_manager.sv
 DUT_files/main_control_logic/dc_main_control_logic.sv
@@ -51,3 +50,6 @@ DUT_files/buffering_unit/dc_bu_write_manager.sv
 DUT_files/buffering_unit/dc_bu_buff_func_manager.sv
 DUT_files/buffering_unit/dc_buffering_unit.sv
 DUT_files/buffering_unit/dc_bu_memory.sv
+DUT_files/de10_lite_sdram_nios_test.v
+DUT_files/VGA_driver/test_pattern_generator.v
+DUT_files/VGA_driver/video_sync_generator.v

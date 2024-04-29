@@ -267,8 +267,14 @@ wire matrix_en_c = matrix_prefill_c || (tex_read_end_c ? quad_shift_c : texel_tr
 assign tex_x_inc_c = matrix_en_c && (gather_fsm_r == GATHER_FSM_ACTIVE);
 
 always @(posedge clk or negedge nreset)
-  if (!nreset)
-    matrix_r <= '{default: '0};
+  if (!nreset) begin
+    for (byte i=0; i<5; i=i+1) begin
+      for (byte j=0; j<4; j=j+1) begin
+        matrix_r[i][j] <= '0;
+      end
+        //matrix_r <= '{default: '0};
+    end
+  end
   else if (matrix_en_c)
     matrix_r <= matrix_nxt_c;
 

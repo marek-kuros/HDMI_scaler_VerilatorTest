@@ -266,7 +266,7 @@ wire VGA_CTRL_CLK;
     .SCALE_METHOD_WIDTH(SCALE_METHOD_WIDTH),
     .BITS_PER_PIXEL(BITS_PER_PIXEL)
   )dut(
-    .clk(VGA_CTRL_CLK),//TODO:
+    .clk(MAX10_CLK2_50),//CLK change //TODO:
     .en(1'b1),
     .nrst(SW[0]),
   
