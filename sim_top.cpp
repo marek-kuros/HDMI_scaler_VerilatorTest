@@ -14,6 +14,12 @@
 
 #define FRAMES_NO 2
 
+//bitmasks
+#define SW_TEST_EN 1
+#define SW_LAYER_0_POS 2
+#define SW_LAYER_0_SCALING 5
+#define SW_SCALING_METHOD 8
+
 // void Set_Blanking(VDE10_LITE_SDRAM_Nios_Test * top, PLL VGA_PLL){
 
 //     if(VGA_PLL.H_ctr >= H_BLANK){
@@ -38,10 +44,10 @@ void Print_All_Signals(VDE10_LITE_SDRAM_Nios_Test * top){
     std::cout << "nrst = " << (top->SW & 0x1) << std::endl;
     std::cout << "SW = " << top->SW << std::endl;
     std::cout << "\n";
-    std::cout << "sw_test_en = " << ((top->SW & 0x2) >> 1) << std::endl;
-    std::cout << "sw_layer_0_pos = " << ((top->SW & 0x1C) >> 2) << std::endl;
-    std::cout << "sw_layer_0_scaling = " << ((top->SW & 0xE0) >> 5) << std::endl;
-    std::cout << "sw_scaling_method = " << ((top->SW & 0x300) >> 8) << std::endl;
+    std::cout << "sw_test_en = " << ((top->SW & 0x2) >> SW_TEST_EN) << std::endl;
+    std::cout << "sw_layer_0_pos = " << ((top->SW & 0x1C) >> SW_LAYER_0_POS) << std::endl;
+    std::cout << "sw_layer_0_scaling = " << ((top->SW & 0xE0) >> SW_LAYER_0_SCALING) << std::endl;
+    std::cout << "sw_scaling_method = " << ((top->SW & 0x300) >> SW_SCALING_METHOD) << std::endl;
     #endif
 
     //outputs
@@ -53,7 +59,6 @@ void Print_All_Signals(VDE10_LITE_SDRAM_Nios_Test * top){
     // std::cout << "B = " << top->VGA_B << std::endl;
     // std::cout << "HS = " << top->VGA_HS << std::endl;
     // std::cout << "VS = " << top->VGA_VS << std::endl;
-
     printf("R = %d\nG = %d\nB = %d\nHS = %d\nVS = %d\n", 
             top->VGA_R, top->VGA_G, top->VGA_B, top->VGA_HS, top->VGA_VS);
     #endif
@@ -76,12 +81,16 @@ int main(int argc, char** argv){
 
     //inputs
     top->MAX10_CLK2_50 = 0;
-    top->SW = 0x2 | 0x4 | 0x20 | 0x100;
+    //top->SW = 0x2 | 0x4 | 0x20 | 0x100;
+    top->SW = 1 << SW_TEST_EN /* 0, 1 */ | 
+              1 << SW_LAYER_0_POS /* 0, 1, 2, 4 */ | 
+              4 << SW_LAYER_0_SCALING /* 0, 1, 2, 4 */ | 
+              1 << SW_SCALING_METHOD /* 0, 1, 2*/;
 
     // outputs
-    top->VGA_R = 12;
-    top->VGA_G = 1;
-    top->VGA_B = 4;
+    top->VGA_R = 0;
+    top->VGA_G = 0;
+    top->VGA_B = 0;
     top->VGA_HS = 0;
     top->VGA_VS = 0;
     
@@ -101,7 +110,7 @@ int main(int argc, char** argv){
         }
 
         //watch signals
-        Print_All_Signals(top.get());
+        // Print_All_Signals(top.get());
 
         // std::cout << "clk " << top->clk << std::endl;
         // printf("clk - %d\n", top->clk);

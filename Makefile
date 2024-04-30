@@ -45,9 +45,9 @@ build_cc:
 ######################################################################
 SIM_FILES = sim_top.cpp
 build_test:
-	verilator --cc --exe --build -j 4 $(SIM_FILES) -f FilesList.txt --top-module $(TOP_MODULE) -Wno-fatal
+	verilator --cc --exe --build -j 1 $(SIM_FILES) -f FilesList.txt --top-module $(TOP_MODULE) -Wno-fatal -o DUT
 run_test:
-	obj_dir/Vdc_toplevel
+	obj_dir/DUT
 
 ### cleanup ##########################################################
 ######################################################################
