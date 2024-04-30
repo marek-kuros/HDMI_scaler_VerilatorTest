@@ -3,7 +3,7 @@
 #include <memory>
 
 #include <verilated.h>
-#include "VDE10_LITE_SDRAM_Nios_Test.h"
+#include "Vdc_toplevel.h"
 
 #include "VGA_PLL.hpp"
 
@@ -20,54 +20,50 @@
 #define SW_LAYER_0_SCALING 5
 #define SW_SCALING_METHOD 8
 
-// void Set_Blanking(VDE10_LITE_SDRAM_Nios_Test * top, PLL VGA_PLL){
+void Set_Blanking(Vdc_toplevel * top, PLL VGA_PLL){
 
-//     if(VGA_PLL.H_ctr >= H_BLANK){
-//         top->horizontal_blanking = 1;
-//     } else {
-//         top->horizontal_blanking = 0;
-//     }
-//     if(VGA_PLL.V_ctr >= V_BLANK){
-//         top->vertical_blanking = 1;
-//     } else {
-//         top->vertical_blanking = 0;
-//     }
-// }
+    if(VGA_PLL.H_ctr >= H_BLANK){
+        top->horizontal_blanking = 1;
+    } else {
+        top->horizontal_blanking = 0;
+    }
+    if(VGA_PLL.V_ctr >= V_BLANK){
+        top->vertical_blanking = 1;
+    } else {
+        top->vertical_blanking = 0;
+    }
+}
 
-void Print_All_Signals(VDE10_LITE_SDRAM_Nios_Test * top){
+void Print_All_Signals(Vdc_toplevel * top){
     //inputs
     #ifdef SHOW_INPUTS
     std::cout << "\n" << std::endl;
     std::cout << "inputs" << std::endl;
     // std::cout << "clk = " << top->MAX10_CLK2_50 << std::endl; //sometimes cout doesn't print value
-    printf("clk = %d\n", top->MAX10_CLK2_50);
-    std::cout << "nrst = " << (top->SW & 0x1) << std::endl;
-    std::cout << "SW = " << top->SW << std::endl;
-    std::cout << "\n";
-    std::cout << "sw_test_en = " << ((top->SW & 0x2) >> SW_TEST_EN) << std::endl;
-    std::cout << "sw_layer_0_pos = " << ((top->SW & 0x1C) >> SW_LAYER_0_POS) << std::endl;
-    std::cout << "sw_layer_0_scaling = " << ((top->SW & 0xE0) >> SW_LAYER_0_SCALING) << std::endl;
-    std::cout << "sw_scaling_method = " << ((top->SW & 0x300) >> SW_SCALING_METHOD) << std::endl;
+    printf("clk = %d\nnrst= %d\nen = %d\nsw_test_en = %d\nsw_layer_0_pos = %d\nsw_layer_0_scaling = %d\n"
+            "sw_scaling_method = %d\nuser_int_valid = %d\nvertical_blanking = %d\nhorizontal_blanking = %d\n"
+            "ipu_pixel_ready = %d\n", 
+            top->clk, top->nrst, top->en, top->sw_test_en, top->sw_layer_0_pos, top->sw_layer_0_scaling,
+            top->sw_scaling_method, top->user_int_valid, top->vertical_blanking, top->horizontal_blanking,
+            top->ipu_pixel_ready);
+
     #endif
 
     //outputs
     #ifdef SHOW_OUTPUTS
-    std::cout << "\n" << std::endl;
+    std::cout << "" << std::endl;
     std::cout << "outputs" << std::endl;
-    // std::cout << "R = " << top->VGA_R << std::endl;
-    // std::cout << "G = " << top->VGA_G << std::endl;
-    // std::cout << "B = " << top->VGA_B << std::endl;
-    // std::cout << "HS = " << top->VGA_HS << std::endl;
-    // std::cout << "VS = " << top->VGA_VS << std::endl;
-    printf("R = %d\nG = %d\nB = %d\nHS = %d\nVS = %d\n", 
-            top->VGA_R, top->VGA_G, top->VGA_B, top->VGA_HS, top->VGA_VS);
+    printf("led_frame_underrun = %d\nled_frame_finished = %d\nuser_int_ready = %d\n"
+            "ipu_pixel_valid = %d\nipu_pixel_border = %d\nipu_pixel_data = %d\n", 
+            top->led_frame_underrun, top->led_frame_finished, top->user_int_ready,
+            top->ipu_pixel_valid, top->ipu_pixel_border, top->ipu_pixel_data);
     #endif
 }
 
 
 int main(int argc, char** argv){
     //my stuff
-    // PLL VGA_PLL;
+    PLL VGA_PLL;
 
     //verilator stuff
     const std::unique_ptr<VerilatedContext> contextp{new VerilatedContext};
@@ -77,36 +73,54 @@ int main(int argc, char** argv){
     contextp->traceEverOn(true);
     contextp->commandArgs(argc, argv);
 
-    const std::unique_ptr<VDE10_LITE_SDRAM_Nios_Test> top{new VDE10_LITE_SDRAM_Nios_Test{contextp.get(), "TOP"}};
+    const std::unique_ptr<Vdc_toplevel> top{new Vdc_toplevel{contextp.get(), "TOP"}};
 
     //inputs
-    top->MAX10_CLK2_50 = 0;
-    //top->SW = 0x2 | 0x4 | 0x20 | 0x100;
-    top->SW = 1 << SW_TEST_EN /* 0, 1 */ | 
-              1 << SW_LAYER_0_POS /* 0, 1, 2, 4 */ | 
-              4 << SW_LAYER_0_SCALING /* 0, 1, 2, 4 */ | 
-              1 << SW_SCALING_METHOD /* 0, 1, 2*/;
+    top->clk = 0;
+    top->nrst = 0;
+    // top->en = 0; //<- seems important
+    // top->sw_test_en = 0;
+    // top->sw_layer_0_pos = 0;
+    // top->sw_layer_0_scaling = 0;
+    // top->sw_scaling_method = 0;
+    // top->user_int_valid = 0;
+    // top->vertical_blanking = 0;
+    // top->horizontal_blanking = 0;
+    // top->ipu_pixel_ready = 0;
 
-    // outputs
-    top->VGA_R = 0;
-    top->VGA_G = 0;
-    top->VGA_B = 0;
-    top->VGA_HS = 0;
-    top->VGA_VS = 0;
-    
+    // //outputs
+    // top->led_frame_underrun
+    // top->led_frame_finished
+    // top->user_int_ready
+    // top->ipu_pixel_valid
+    // top->ipu_pixel_border
+    // top->ipu_pixel_data
+
     //const
-    
+    top->const_input_size_width = 128;
+    top->const_input_size_height = 128;
+    top->const_output_size_width = 640;
+    top->const_output_size_height = 480;
+    top->const_initial_address = 0;
+    top->const_border_color = 0;
+
     while(!(contextp->gotFinish())){
 
         //increment timing
         contextp->timeInc(1);
-        top->MAX10_CLK2_50 = !top->MAX10_CLK2_50 & 0x1;
+        top->clk = !top->clk & 0x1;
+        VGA_PLL.Increment_Ctr();
+
+        //drive blanking
+        Set_Blanking(top.get(), VGA_PLL);
+
 
         //reset signal
         if(contextp->time() < 15){
-            top->SW = top->SW & (~0x1);
+            top->nrst = 0 & (~0x1);
+            VGA_PLL.Reset();
         } else {
-            top->SW = top->SW | (0x1);
+            top->nrst = 1 | (0x1);
         }
 
         //watch signals

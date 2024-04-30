@@ -32,7 +32,7 @@ VERILATOR_COVERAGE = verilator_coverage
 VERILATOR_INPUT = -f FilesList.txt sim_top.cpp
 
 ### top name #########################################################
-TOP_MODULE = DE10_LITE_SDRAM_Nios_Test #dc_toplevel
+TOP_MODULE = dc_toplevel #DE10_LITE_SDRAM_Nios_Test #dc_toplevel
 ### timescale ########################################################
 ######################################################################
 default: build_binary
@@ -43,7 +43,7 @@ build_cc:
 	verilator --cc -j 0 -f FilesList.txt --top-module $(TOP_MODULE) -Wno-fatal
 ### testing ##########################################################
 ######################################################################
-SIM_FILES = sim_top.cpp
+SIM_FILES = sim_top.cpp VGA_PLL.cpp
 build_test:
 	verilator --cc --exe --build -j 1 $(SIM_FILES) -f FilesList.txt --top-module $(TOP_MODULE) -Wno-fatal -o DUT
 run_test:
