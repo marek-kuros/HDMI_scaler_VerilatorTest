@@ -44,8 +44,9 @@ build_cc:
 ### testing ##########################################################
 ######################################################################
 SIM_FILES = sim_top.cpp VGA_PLL.cpp
+ADD_TRACE = --trace
 build_test:
-	verilator --cc --exe --build -j 1 $(SIM_FILES) -f FilesList.txt --top-module $(TOP_MODULE) -Wno-fatal -o DUT
+	verilator --cc --exe $(ADD_TRACE) --build -j 1 $(SIM_FILES) -f FilesList.txt --top-module $(TOP_MODULE) -Wno-fatal -o DUT
 run_test:
 	obj_dir/DUT
 

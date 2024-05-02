@@ -1,4 +1,5 @@
 #folders
+logs/
 obj_dir/
 .dvt
 .vscode
