@@ -61,7 +61,11 @@ module dc_toplevel#(
   axi_rresp, 
   axi_rlast, 
   axi_rvalid,
-  axi_rready
+  axi_rready,
+
+  //bypass signal
+
+  input_pixel_data
 );
   localparam IPU_TEX_SIZE_WIDTH = 12;
 
@@ -115,6 +119,8 @@ module dc_toplevel#(
   input wire axi_rvalid;
   output wire axi_rready;
 
+  //bypass signal
+  input wire[(BITS_PER_PIXEL-1):0] input_pixel_data;
 
 
 wire[(AXI_ARADDR_WIDTH-1):0] frame_addr;
@@ -193,8 +199,8 @@ dc_buffering_unit #(
   .nrst(nrst),
   
   .pixels_per_line(pixels_per_line),
-  .pixel_data(pixel_data),
-  .pixel_fifo_en(pixel_fifo_en),
+  .pixel_data(input_pixel_data),
+  .pixel_fifo_en(1'b1),
 
   .reset_x(reset_x),
   .next_line(next_line),
@@ -327,7 +333,7 @@ dc_main_control_logic #(
   // FU interface
   .line_number(line_number),
   .line_data_valid(line_data_valid),
-  .line_data_ready(line_data_ready),
+  .line_data_ready(1'b1),
   .frame_addr(frame_addr),
   .pixels_per_line(pixels_per_line),
   
