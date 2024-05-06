@@ -24,14 +24,14 @@
 void Set_Blanking(Vdc_toplevel * top, PLL VGA_PLL){
 
     if(VGA_PLL.H_ctr >= H_BLANK){
-        top->horizontal_blanking = !1;
+        top->horizontal_blanking = 1;
     } else {
-        top->horizontal_blanking = !0;
+        top->horizontal_blanking = 0;
     }
     if(VGA_PLL.V_ctr >= V_BLANK){
-        top->vertical_blanking = !1;
+        top->vertical_blanking = 1;
     } else {
-        top->vertical_blanking = !0;
+        top->vertical_blanking = 0;
     }
 }
 
