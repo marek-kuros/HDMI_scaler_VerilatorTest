@@ -1,2 +1,11 @@
+#folders
+logs/
 obj_dir/
+.dvt
+.vscode
+
+#subfolders
+
+#files
 FilesList_copy.txt
+dvt_build.log
